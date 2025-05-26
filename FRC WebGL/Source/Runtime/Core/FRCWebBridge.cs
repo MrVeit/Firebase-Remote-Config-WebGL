@@ -120,7 +120,12 @@ namespace FRCWebGL.Core
             _onInitialized = onInitialized;
 
             var instanceConfigJson = JsonUtility.ToJson(instanceConfig);
+
+            FRCWebLogger.Log($"Converted init config to json: {instanceConfigJson}");
+
             var defaultConfigJson = JsonUtility.ToJson(defaultConfig);
+
+            FRCWebLogger.Log($"Converted default config to json: {defaultConfigJson}");
 
             InitFRC(instanceConfigJson, defaultConfigJson, OnInitialize);
         }

@@ -79,7 +79,8 @@ const firebaseRCInstance = {
                 defaultConfig = JSON.parse(UTF8ToString(defaultConfigPtr));
 
                 console.log(`[FRC WebGL] Parsed firebase init `+
-                    `config: ${instanceConfig}, default: ${defaultConfig}`);
+                    `config: ${JSON.stringify(instanceConfig)}, `+
+                    `default: ${JSON.stringify(defaultConfig)}`);
             }
             catch (error)
             {
