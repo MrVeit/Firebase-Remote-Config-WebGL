@@ -196,8 +196,6 @@ const firebaseRCInstance = {
                 return;
             }
 
-            const valueId = UTF8ToString(valueIdPtr);
-
             console.log(`[FRC WebGL] Start fetching and activate remote config...`);
 
             remoteConfig.fetchAndActivate().then(() =>
