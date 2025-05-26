@@ -106,7 +106,7 @@ namespace FRCWebGL.Core
 #endregion
 
         public static void Init(FirebaseInitConfig instanceConfig, 
-            Dictionary<string, string> defaultConfig, Action<bool> onInitialized)
+            Dictionary<string, object> defaultConfig, Action<bool> onInitialized)
         {
             if (instanceConfig == null)
             {
@@ -120,10 +120,11 @@ namespace FRCWebGL.Core
             _onInitialized = onInitialized;
 
             var instanceConfigJson = JsonUtility.ToJson(instanceConfig);
+            var fakeDictionary = SerializableDictionary.From(defaultConfig);
 
             FRCWebLogger.Log($"Converted init config to json: {instanceConfigJson}");
 
-            var defaultConfigJson = JsonUtility.ToJson(defaultConfig);
+            var defaultConfigJson = JsonUtility.ToJson(fakeDictionary);
 
             FRCWebLogger.Log($"Converted default config to json: {defaultConfigJson}");
 
@@ -205,7 +206,7 @@ namespace FRCWebGL.Core
                 return new Dictionary<string, string>();
             }
 
-            return wrapper.ToDictionary(); ;
+            return wrapper.To();
         }
 
         public static ValueSources GetItemSource(string itemKey)

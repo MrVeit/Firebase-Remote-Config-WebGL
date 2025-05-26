@@ -57,6 +57,41 @@ const firebaseRCInstance = {
             return remoteConfigInstance;
         },
 
+        tryConvertDefaultConfig: function(defaultConfigPtr)
+        {
+            var defaultConfig;
+
+            var defaultRaw = JSON.parse(UTF8ToString(defaultConfigPtr));
+
+            if (Array.isArray(defaultRaw.keys) && 
+                Array.isArray(defaultRaw.values))
+            {
+                for (var i = 0; i < defaultRaw.keys.length; i++)
+                {
+                    defaultConfig[defaultRaw.keys[i]] = defaultRaw.values[i];
+                }
+
+                return defaultConfig;
+            }
+            
+            return defaultRaw;
+        },
+
+        tryGetFirebaseConfig: function(instanceConfig)
+        {
+            const firebaseConfig =
+            {
+                apiKey: instanceConfig.apiKey,
+                authDomain: instanceConfig.authDomain,
+                projectId: instanceConfig.projectId,
+                storageBucket: instanceConfig.storageBucket || null,
+                messagingSenderId: instanceConfig.messagingSenderId || null,
+                appId: instanceConfig.appId
+            };
+
+            return firebaseConfig;
+        },
+
         init: function(instanceConfigPtr, 
             defaultConfigPtr, onInitialized)
         {
@@ -73,7 +108,7 @@ const firebaseRCInstance = {
             try
             {
                 instanceConfig = JSON.parse(UTF8ToString(instanceConfigPtr));
-                defaultConfig = JSON.parse(UTF8ToString(defaultConfigPtr));
+                defaultConfig = this.tryConvertDefaultConfig(defaultConfigPtr);
 
                 console.log(`[FRC WebGL] Parsed firebase init `+
                     `config: ${JSON.stringify(instanceConfig)}, `+
@@ -89,15 +124,7 @@ const firebaseRCInstance = {
                 return;
             }
 
-            const firebaseConfig =
-            {
-                apiKey: instanceConfig.apiKey,
-                authDomain: instanceConfig.authDomain,
-                projectId: instanceConfig.projectId,
-                storageBucket: instanceConfig.storageBucket || null,
-                messagingSenderId: instanceConfig.messagingSenderId || null,
-                appId: instanceConfig.appId
-            };
+            const firebaseConfig = this.tryGetFirebaseConfig(instanceConfig);
 
             try
             {

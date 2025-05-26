@@ -10,10 +10,12 @@ namespace FRCWebGL.Data
         public string projectId;
         public string appId;
 
+#nullable enable
         public string? storageBucket;
         public string? messagingSenderId;
 
         public long? minFetchDelayPerMillis;
         public long? fetchTimeoutMillis;
+#nullable restore
     }
 }

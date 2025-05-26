@@ -32,16 +32,28 @@ namespace FRCWebGL.Demo
                 fetchTimeoutMillis = 60000,
             };
 
-            var defaultConfig = new Dictionary<string, string>()
+            var firstTestJsonItem = new TestJsonData()
             {
-                { "test_boolean_item_1", "true" },
-                { "test_boolean_item_2", "false" },
-                { "test_int_item_1", "1488" },
-                { "test_int_item_2", "69" },
+                code = 403,
+                message = "Hacked by Satoshi Nacamoto"
+            };
+
+            var secondTestJsonItem = new TestJsonData()
+            {
+                code = 200,
+                message = "Powered by FRC WebGL"
+            };
+
+            var defaultConfig = new Dictionary<string, object>()
+            {
+                { "test_boolean_item_1", true },
+                { "test_boolean_item_2", false },
+                { "test_int_item_1", 1488 },
+                { "test_int_item_2", 69 },
                 { "test_string_item_1", "Powered by FRC WebGL" },
                 { "test_string_item_2", "Hm, are u ready?" },
-                { "test_json_item_1", "{\"message\":\"Hacked by Satoshi Nacamoto\"}" },
-                { "test_json_item_2", "{\"code\":200,\"message\":\"Powered by FRC WebGL\"}" }
+                { "test_json_item_1", JsonUtility.ToJson(firstTestJsonItem) },
+                { "test_json_item_2", JsonUtility.ToJson(secondTestJsonItem) }
             };
 
             FRCWebBridge.Init(initConfig, defaultConfig, (isSuccess) =>
@@ -71,7 +83,7 @@ namespace FRCWebGL.Demo
 
                 var isReadtStatus = FRCWebBridge.IsReady();
 
-                Debug.Log($"Ready status from lib after load: {isReadtStatus}");
+                Debug.Log($"Ready status from lib before check load: {isReadtStatus}");
 
                 if (isLoaded)
                 {
@@ -108,7 +120,7 @@ namespace FRCWebGL.Demo
 
             var allItems = FRCWebBridge.GetAllItems();
 
-            Debug.Log($"Loaded all items: {JsonUtility.ToJson(allItems)}");
+            Debug.Log($"Loaded all items: {allItems}");
 
             var bool1Source = FRCWebBridge.GetItemSource("test_boolean_item_1");
 
