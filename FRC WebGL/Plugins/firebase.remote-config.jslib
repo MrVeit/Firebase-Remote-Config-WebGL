@@ -23,13 +23,10 @@ const firebaseRCInstance = {
         {
             dynCall(callId, callback, dataPtr);
 
-            if (callId === 'v' || dataPtr === [0] || 
-                dataPtr === [1])
+            if (typeof allocate === "undefined")
             {
-                return;
+                _free(dataPtr);
             }
-
-            _free(dataPtr);
         },
 
         isAvailableLib: function()
@@ -397,18 +394,20 @@ const firebaseRCInstance = {
             try
             {
                 const rawItems = remoteConfig.getAll();
-                
-                var plain = {};
+
+                var keys = [];
+                var values = [];
 
                 for (var key in rawItems)
                 {
-                    if (Object.prototype.hasOwnProperty.call(rawItems, key))
+                    if (rawItems.hasOwnProperty(key))
                     {
-                        plain[key] = rawItems[key].asString();
+                        keys.push(key);
+                        values.push(rawItems[key].asString());
                     }
                 }
 
-                var jsonItems = JSON.stringify({ dictionary: plain });
+                var jsonItems = JSON.stringify({ keys: keys, values: values });
 
                 console.log(`[FRC WebGL] Successfully parsed all items: ${jsonItems}`);
                 

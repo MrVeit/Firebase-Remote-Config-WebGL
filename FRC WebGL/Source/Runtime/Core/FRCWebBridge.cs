@@ -191,10 +191,21 @@ namespace FRCWebGL.Core
 
             FRCWebLogger.Log($"Parsed converted items list to json: {jsonPtrData}");
 
-            var itemsList = JsonUtility.FromJson<
-                SerializableDictionary>(jsonPtrData).ToDictionary();
+            var wrapper = JsonUtility.FromJson<
+                SerializableDictionary>(jsonPtrData);
 
-            return itemsList;
+            var keys = wrapper.keys;
+            var values = wrapper.values;
+
+            if (keys == null || values == null ||
+                keys.Length != values.Length)
+            {
+                FRCWebLogger.LogError("Invalid key/value arrays from native lib");
+
+                return new Dictionary<string, string>();
+            }
+
+            return wrapper.ToDictionary(); ;
         }
 
         public static ValueSources GetItemSource(string itemKey)
