@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 
 namespace FRCWebGL.Data
@@ -12,23 +13,14 @@ namespace FRCWebGL.Data
         public static SerializableDictionary From(
             Dictionary<string, object> dictionary)
         {
-            var dataKeys = new SerializableDictionary
+            var fakeDictionary = new SerializableDictionary
             {
-                keys = new string[dictionary.Count],
-                values = new string[dictionary.Count]
+                keys = dictionary.Keys.ToArray(),
+                values = dictionary.Values.Select(
+                    value => value.ToString()).ToArray()
             };
 
-            int id = 0;
-
-            foreach (var keyValue in dictionary)
-            {
-                dataKeys.keys[id] = keyValue.Key;
-                dataKeys.values[id] = keyValue.Value?.ToString() ?? String.Empty;
-
-                id++;
-            }
-
-            return dataKeys;
+            return fakeDictionary;
         }
 
         public Dictionary<string, string> To()

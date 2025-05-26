@@ -59,13 +59,13 @@ const firebaseRCInstance = {
 
         tryConvertDefaultConfig: function(defaultConfigPtr)
         {
-            var defaultConfig;
-
             var defaultRaw = JSON.parse(UTF8ToString(defaultConfigPtr));
 
             if (Array.isArray(defaultRaw.keys) && 
                 Array.isArray(defaultRaw.values))
             {
+                var defaultConfig = {};
+
                 for (var i = 0; i < defaultRaw.keys.length; i++)
                 {
                     defaultConfig[defaultRaw.keys[i]] = defaultRaw.values[i];
