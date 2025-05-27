@@ -45,9 +45,9 @@ namespace FRCWebGL.Demo
                 message = "Powered by FRC WebGL"
             };
 
-            var convertJson = JsonConvert.SerializeObject(firstTestJsonItem);
+            var convertObject = JsonConvert.SerializeObject(secondTestJsonItem);
 
-            Debug.Log($"Serialized object from JsonConvert: {convertJson}");
+            Debug.Log($"JsonConvert converted object to json: {convertObject}");
 
             var defaultConfig = new Dictionary<string, object>()
             {
@@ -63,7 +63,7 @@ namespace FRCWebGL.Demo
 
             var convertDict = JsonConvert.SerializeObject(defaultConfig);
 
-            Debug.Log($"Serialized dictionary from JsonConvert: {convertDict}");
+            Debug.Log($"JsonConvert converted dict to json: {convertDict}");
 
             FRCWebBridge.Init(initConfig, defaultConfig, (isSuccess) =>
             {
