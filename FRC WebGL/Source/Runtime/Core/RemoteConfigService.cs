@@ -59,14 +59,16 @@ namespace FRCWebGL.Core
                 {
                     FRCWebLogger.Log($"Plugin initialized with status: {isSuccess}");
 
-                    OnInitialized?.Invoke(isSuccess);
-
                     if (isSuccess)
                     {
                         BindOptions(instanceConfig, defaultConfig);
 
+                        OnInitialized?.Invoke(true);
+
                         return;
                     }
+
+                    OnInitialized?.Invoke(false);
 
                     FRCWebLogger.LogError($"Failed to initialize " +
                         $"plugin, something wrong...");
@@ -198,9 +200,9 @@ namespace FRCWebGL.Core
             DefaultConfig = new LocalConfigStorage(defaultConfig);
             Storage = new RemoteConfigStorage();
 
-            FRCWebLogger.Log("Required components successfully created");
-
             IsInitialized = true;
+
+            FRCWebLogger.Log("Required components successfully created");
         }
     }
 }

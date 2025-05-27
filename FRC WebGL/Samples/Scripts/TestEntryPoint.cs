@@ -102,6 +102,13 @@ namespace FRCWebGL.Demo
 
         private void LoadInt1()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_int_item_1";
 
             var itemData = _remoteStorage.GetNumber(key);
@@ -113,6 +120,13 @@ namespace FRCWebGL.Demo
 
         private void LoadInt2()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_int_item_2";
 
             var itemData = _remoteStorage.GetNumber(key);
@@ -124,6 +138,13 @@ namespace FRCWebGL.Demo
 
         private void LoadString1()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_string_item_1";
 
             var itemData = _remoteStorage.GetString(key);
@@ -135,6 +156,13 @@ namespace FRCWebGL.Demo
 
         private void LoadString2()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_string_item_2";
 
             var itemData = _remoteStorage.GetString(key);
@@ -146,6 +174,13 @@ namespace FRCWebGL.Demo
 
         private void LoadBool1()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_boolean_item_1";
 
             var itemData = _remoteStorage.GetBoolean(key);
@@ -157,6 +192,13 @@ namespace FRCWebGL.Demo
 
         private void LoadBool2()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_boolean_item_2";
 
             var itemData = _remoteStorage.GetBoolean(key);
@@ -168,6 +210,13 @@ namespace FRCWebGL.Demo
 
         private void LoadJson1()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_json_item_1";
 
             var itemData = _remoteStorage.GetValue(key);
@@ -179,6 +228,13 @@ namespace FRCWebGL.Demo
 
         private void LoadJson2()
         {
+            if (_remoteStorage == null)
+            {
+                Debug.LogWarning("Remote storage is not initialized");
+
+                return;
+            }
+
             var key = "test_json_item_2";
 
             var itemData = _remoteStorage.GetValue(key);
@@ -193,7 +249,7 @@ namespace FRCWebGL.Demo
             _debugInfo.text = $"DEBUG INFO: {message}";
         }
 
-        private void BindButtons()
+        private void EnableButtons()
         {
             foreach (var button in _availableButtons)
             {
@@ -211,15 +267,15 @@ namespace FRCWebGL.Demo
 
         private void OnRemoteConfigInitialized(bool isSuccess)
         {
-            Debug.Log($"Remonte config init status: {isSuccess}");
+            Debug.Log($"Remote config init status: {isSuccess}");
 
             if (isSuccess)
             {
-                BindButtons();
-
                 _remoteConfigService.FetchAndActivate();
 
                 _remoteStorage = _remoteConfigService.Storage;
+
+                EnableButtons();
 
                 WriteLog("Remote config service initialized and ready for fetch");
 
