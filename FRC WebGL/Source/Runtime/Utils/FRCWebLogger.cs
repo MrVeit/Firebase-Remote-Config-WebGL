@@ -1,10 +1,18 @@
 using UnityEngine;
+using FRCWebGL.Core.Base;
+using FRCWebGL.Infrastructure;
 
 namespace FRCWebGL.Utils
 {
-    public class FRCWebLogger : MonoBehaviour
+    public sealed class FRCWebLogger
     {
-        private static bool IsEnabled => true;
+        private static readonly IRemoteConfigService _mainService =
+            ServiceLocator.Get<IRemoteConfigService>();
+
+        private static readonly bool _isEnabled = 
+            _mainService != null ? _mainService.IsDebugMode : false;
+
+        private static bool IsEnabled => _isEnabled;
 
         public const string PREFIX = "FRC WebGL";
 

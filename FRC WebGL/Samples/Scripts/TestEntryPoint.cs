@@ -1,27 +1,50 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using FRCWebGL.Core;
+using FRCWebGL.Core.Base;
 using FRCWebGL.Data;
-using Newtonsoft.Json;
 
 namespace FRCWebGL.Demo
 {
     public class TestEntryPoint : MonoBehaviour
     {
+        [SerializeField, Space] private Button[] _availableButtons;
+        [SerializeField, Space] private Button _loadInt1Button;
+        [SerializeField] private Button _loadInt2Button;
+        [SerializeField, Space] private Button _loadString1Button;
+        [SerializeField] private Button _loadString2Button;
+        [SerializeField, Space] private Button _loadBool1Button;
+        [SerializeField] private Button _loadBool2Button;
+        [SerializeField, Space] private Button _loadJson1Button;
+        [SerializeField] private Button _loadJson2Button;
+        [SerializeField, Space] private TextMeshProUGUI _debugInfo;
+
+        private IRemoteConfigService _remoteConfigService;
+
+        private IRemoteConfigStorage _remoteStorage;
+
+        private void OnDestroy()
+        {
+            if (_remoteConfigService == null)
+            {
+                return;
+            }
+
+            _remoteConfigService.OnInitialized -= OnRemoteConfigInitialized;
+            _remoteConfigService.OnStorageActivated -= OnRemoteStorageActivated;
+        }
+
         private void Start()
         {
-#if UNITY_EDITOR
-            Debug.LogWarning("Detected unsupported platform, " +
-                "make WebGL build and try again");
-
-            return;
-#endif
-
             Init();
         }
 
         private void Init()
         {
+            DisableButtons();
+
             var initConfig = new FirebaseInitConfig()
             {
                 apiKey = "AIzaSyDVyPidX_BeSEcwwM4tkZ325TBaqXp2P8s",
@@ -36,18 +59,14 @@ namespace FRCWebGL.Demo
             var firstTestJsonItem = new TestJsonData()
             {
                 code = 403,
-                message = "Hacked by Satoshi Nacamoto"
+                message = "Failed to fetch X-Powered-By"
             };
 
             var secondTestJsonItem = new TestJsonData()
             {
                 code = 200,
-                message = "Powered by FRC WebGL"
+                message = "Powered by Veittech"
             };
-
-            var convertObject = JsonConvert.SerializeObject(secondTestJsonItem);
-
-            Debug.Log($"JsonConvert converted object to json: {convertObject}");
 
             var defaultConfig = new Dictionary<string, object>()
             {
@@ -55,97 +74,184 @@ namespace FRCWebGL.Demo
                 { "test_boolean_item_2", false },
                 { "test_int_item_1", 1488 },
                 { "test_int_item_2", 69 },
-                { "test_string_item_1", "Powered by FRC WebGL" },
-                { "test_string_item_2", "Hm, are u ready?" },
+                { "test_string_item_1", "Powered by Veittech" },
+                { "test_string_item_2", "Failed to fetch X-Powered-By" },
                 { "test_json_item_1", JsonUtility.ToJson(firstTestJsonItem) },
                 { "test_json_item_2", JsonUtility.ToJson(secondTestJsonItem) }
             };
 
-            var convertDict = JsonConvert.SerializeObject(defaultConfig);
+            _remoteConfigService = RemoteConfigProvider.Instance;
 
-            Debug.Log($"JsonConvert converted dict to json: {convertDict}");
+            _remoteConfigService.Init(true, initConfig, defaultConfig);
 
-            FRCWebBridge.Init(initConfig, defaultConfig, (isSuccess) =>
-            {
-                Debug.Log($"Web bridge successully initialized, status: {isSuccess}");
-
-                if (isSuccess)
-                {
-                    var isReadtStatus = FRCWebBridge.IsReady();
-
-                    Debug.Log($"Ready status from lib before load: {isReadtStatus}");
-
-                    FetchConfig();
-
-                    return;
-                }
-
-                Debug.LogWarning("Failed to initialize web bridge, something wrong...");
-            });
+            _remoteConfigService.OnInitialized += OnRemoteConfigInitialized;
+            _remoteConfigService.OnStorageActivated += OnRemoteStorageActivated;
         }
 
-        private void FetchConfig()
+        private void LoadInt1()
         {
-            FRCWebBridge.FetchAndActivate((isLoaded) =>
-            {
-                Debug.Log($"Remote config load status: {isLoaded}");
+            var key = "test_int_item_1";
 
-                var isReadtStatus = FRCWebBridge.IsReady();
+            var itemData = _remoteStorage.GetNumber(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-                Debug.Log($"Ready status from lib before check load: {isReadtStatus}");
-
-                if (isLoaded)
-                {
-                    ParseKeys();
-
-                    return;
-                }
-
-                Debug.LogWarning("Failed to load remote config data");
-            });
+            WriteLog($"Loaded value by 'int' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
         }
 
-        private void ParseKeys()
+        private void LoadInt2()
         {
-            var boolItem1 = FRCWebBridge.GetBooleanItem("test_boolean_item_1");
-            var boolitem2 = FRCWebBridge.GetBooleanItem("test_boolean_item_2");
+            var key = "test_int_item_2";
 
-            Debug.Log($"Loaded bool_1: {boolItem1}, bool_2: {boolitem2}");
+            var itemData = _remoteStorage.GetNumber(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            var intItem1 = FRCWebBridge.GetNumberItem("test_int_item_1");
-            var intItem2 = FRCWebBridge.GetNumberItem("test_int_item_2");
+            WriteLog($"Loaded value by 'int' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
 
-            Debug.Log($"Loaded number_1: {intItem1}, number_2: {intItem2}");
+        private void LoadString1()
+        {
+            var key = "test_string_item_1";
 
-            var stringItem1 = FRCWebBridge.GetStringItem("test_string_item_1");
-            var stringItem2 = FRCWebBridge.GetStringItem("test_string_item_2");
+            var itemData = _remoteStorage.GetString(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            Debug.Log($"Loaded string_1: {stringItem1}, string_2: {stringItem2}");
+            WriteLog($"Loaded value by 'string' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
 
-            var jsonItem1 = FRCWebBridge.GetValueItem("test_json_item_1");
-            var jsonItem2 = FRCWebBridge.GetValueItem("test_json_item_2");
+        private void LoadString2()
+        {
+            var key = "test_string_item_2";
 
-            Debug.Log($"Loaded json_1: {jsonItem1}, json_2: {jsonItem2}");
+            var itemData = _remoteStorage.GetString(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            var allItems = FRCWebBridge.GetAllItems();
+            WriteLog($"Loaded value by 'string' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
 
-            Debug.Log($"Loaded all items: {allItems}");
+        private void LoadBool1()
+        {
+            var key = "test_boolean_item_1";
 
-            var bool1Source = FRCWebBridge.GetItemSource("test_boolean_item_1");
+            var itemData = _remoteStorage.GetBoolean(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            Debug.Log($"bool_1 item source: {bool1Source}");
+            WriteLog($"Loaded value by 'bool' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
 
-            var int1Source = FRCWebBridge.GetItemSource("test_int_item_1");
+        private void LoadBool2()
+        {
+            var key = "test_boolean_item_2";
 
-            Debug.Log($"int_1 item source: {int1Source}");
+            var itemData = _remoteStorage.GetBoolean(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            var string1Source = FRCWebBridge.GetItemSource("test_string_item_1");
+            WriteLog($"Loaded value by 'bool' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
 
-            Debug.Log($"string_1 item source: {string1Source}");
+        private void LoadJson1()
+        {
+            var key = "test_json_item_1";
 
-            var json1Source = FRCWebBridge.GetItemSource("test_json_item_1");
+            var itemData = _remoteStorage.GetValue(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
 
-            Debug.Log($"json_1 item source: {json1Source}");
+            WriteLog($"Loaded value by 'json' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
+
+        private void LoadJson2()
+        {
+            var key = "test_json_item_2";
+
+            var itemData = _remoteStorage.GetValue(key);
+            var dataSource = _remoteStorage.GetStorageType(key);
+
+            WriteLog($"Loaded value by 'json' item with key: '{key}', " +
+                $"storage type: '{dataSource}', data: {itemData}");
+        }
+
+        private void WriteLog(string message)
+        {
+            _debugInfo.text = $"DEBUG INFO: {message}";
+        }
+
+        private void BindButtons()
+        {
+            foreach (var button in _availableButtons)
+            {
+                button.interactable = true;
+            }
+
+            _loadInt1Button.onClick.AddListener(LoadInt1);
+            _loadInt2Button.onClick.AddListener(LoadInt2);
+
+            _loadString1Button.onClick.AddListener(LoadString1);
+            _loadString2Button.onClick.AddListener(LoadString2);
+
+            _loadBool1Button.onClick.AddListener(LoadBool1);
+            _loadBool2Button.onClick.AddListener(LoadBool2);
+
+            _loadJson1Button.onClick.AddListener(LoadJson1);
+            _loadJson2Button.onClick.AddListener(LoadJson2);
+        }
+
+        private void DisableButtons()
+        {
+            foreach (var button in _availableButtons)
+            {
+                button.interactable = false;
+            }
+        }
+
+        private void OnRemoteConfigInitialized(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                BindButtons();
+
+                _remoteConfigService.FetchAndActivate();
+
+                _remoteStorage = _remoteConfigService.Storage;
+
+                WriteLog("Remote config service initialized and ready for fetch");
+
+                return;
+            }
+
+            WriteLog("Failed to initialize remote config service");
+        }
+
+        private void OnLocalRemoteConfigUpdated(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                WriteLog("Default config updated by local storage");
+
+                return;
+            }
+
+            WriteLog("Failed to update default config by local storage");
+        }
+
+        private void OnRemoteStorageActivated(bool isSuccess)
+        {
+            if (isSuccess)
+            {
+                var allItems = FRCWebBridge.GetAllItems();
+
+                WriteLog($"Remote config successfully activated and " +
+                    $"ready for use, cached data: {allItems}");
+
+                return;
+            }
+
+            WriteLog("Failed to activate previous fetched remote config");
         }
     }
 }

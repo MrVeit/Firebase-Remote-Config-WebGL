@@ -177,7 +177,7 @@ namespace FRCWebGL.Core
             return ToString(GetValueFRC(itemKey));
         }
 
-        public static Dictionary<string, string> GetAllItems()
+        public static Dictionary<string, object> GetAllItems()
         {
             var ptrData = GetAllFRC();
 
@@ -185,7 +185,7 @@ namespace FRCWebGL.Core
             {
                 FRCWebLogger.LogWarning("Loaded remote items was not available");
 
-                return new Dictionary<string, string>();
+                return new Dictionary<string, object>();
             }
 
             var jsonPtrData = ToString(ptrData);
@@ -203,7 +203,7 @@ namespace FRCWebGL.Core
             {
                 FRCWebLogger.LogError("Invalid key/value arrays from native lib");
 
-                return new Dictionary<string, string>();
+                return new Dictionary<string, object>();
             }
 
             return wrapper.To();
@@ -228,9 +228,11 @@ namespace FRCWebGL.Core
         }
 
         public static void SetDefaultConfig(
-            Dictionary<string, string> defaultConfig, Action<bool> onUpdated)
+            Dictionary<string, object> defaultConfig, Action<bool> onUpdated)
         {
             _onDefaultConfigChanged = onUpdated;
+
+            var fakeDictionary = SerializableDictionary.From(defaultConfig);
 
             var jsonConfig = JsonUtility.ToJson(defaultConfig);
 

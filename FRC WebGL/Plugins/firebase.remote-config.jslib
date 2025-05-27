@@ -462,9 +462,9 @@ const firebaseRCInstance = {
         setDefaultConfig: function(defaultConfigPtr, onUpdated)
         {
             const remoteConfig = this.tryGetLibInstance();
-            const parsedConfig = JSON.parse(UTF8ToString(defaultConfigPtr));
+            const defaultConfig = this.tryConvertDefaultConfig(defaultConfigPtr);
 
-            if (!remoteConfig || !parsedConfig)
+            if (!remoteConfig || !defaultConfig)
             {
                 console.error(`[FRC WebGL] Failed to update the `+
                     `plugin's default configuration...`);
@@ -476,7 +476,7 @@ const firebaseRCInstance = {
 
             try
             {
-                remoteConfig.defaultConfig = parsedConfig;
+                remoteConfig.defaultConfig = defaultConfig;
 
                 console.log(`[FRC WebGL] The default configuration `+
                     `has been successfully updated`);

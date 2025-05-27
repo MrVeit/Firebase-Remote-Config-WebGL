@@ -1,17 +1,13 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
 namespace FRCWebGL.Data
 {
     [Serializable]
     public sealed class SerializableDictionary
     {
-        [JsonProperty("keys")]
         public string[] keys;
-
-        [JsonProperty("values")]
         public string[] values;
 
         public static SerializableDictionary From(
@@ -27,9 +23,9 @@ namespace FRCWebGL.Data
             return fakeDictionary;
         }
 
-        public Dictionary<string, string> To()
+        public Dictionary<string, object> To()
         {
-            var itemsDictionary = new Dictionary<string, string>();
+            var itemsDictionary = new Dictionary<string, object>();
 
             for (int i = 0; i < keys.Length; i++)
             {

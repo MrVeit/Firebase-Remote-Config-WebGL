@@ -16,5 +16,17 @@ namespace FRCWebGL.Utils
 
             return ptr == IntPtr.Zero ? null : convertedString;
         }
+
+        public static bool IsSupportedPlatform()
+        {
+#if UNITY_WEBGL && !UNITY_EDITOR
+            return true;
+#endif
+
+            FRCWebLogger.LogWarning("Unsupported platform detected. " +
+                "Build WebGL and try again to initialize the plugin.");
+
+            return false;
+        }
     }
 }
