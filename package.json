@@ -1,0 +1,23 @@
+{
+    "name": "com.veittech.frc.webgl",
+    "version": "1.0.0",
+    "displayName": "Firebase Remote Config WebGL",
+    "description": "A plugin for using Firebase Remote Config functionality in WebGL projects based on the Firebase JavaScript SDK built on Unity.",
+    "unity": "2020.3",
+    "unityRelease": "0f8",
+    "keywords": [
+      "Unity",
+      "Unity WebGL",
+      "Firebase Unity",
+      "Firebase Unity WebGL",
+      "Firebase Remote Config",
+      "Firebase Remote Config Unity",
+      "Firebase Remote Config Unity WebGL",
+      "WebGL"
+    ],
+    "author": 
+    {
+      "name": "MrVeit",
+      "email": "misster.veit@gmail.com"
+    }
+}
