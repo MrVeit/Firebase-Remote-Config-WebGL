@@ -290,9 +290,12 @@ namespace FRCWebGL.Demo
             if (isSuccess)
             {
                 var allItems = FRCWebBridge.GetAllItems();
+                var fakeDict = SerializableDictionary.From(allItems);
+
+                var fakeDictJson = JsonUtility.ToJson(fakeDict);
 
                 WriteLog($"Remote config successfully activated and " +
-                    $"ready for use, cached data: {allItems}");
+                    $"ready for use, cached data: {fakeDictJson}");
 
                 return;
             }
