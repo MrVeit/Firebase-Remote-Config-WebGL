@@ -13,10 +13,10 @@ namespace FRCWebGL.Demo
         [SerializeField, Space] private Button[] _availableButtons;
         [SerializeField, Space] private Button _loadInt1Button;
         [SerializeField] private Button _loadInt2Button;
-        [SerializeField, Space] private Button _loadString1Button;
-        [SerializeField] private Button _loadString2Button;
         [SerializeField, Space] private Button _loadBool1Button;
         [SerializeField] private Button _loadBool2Button;
+        [SerializeField, Space] private Button _loadString1Button;
+        [SerializeField] private Button _loadString2Button;
         [SerializeField, Space] private Button _loadJson1Button;
         [SerializeField] private Button _loadJson2Button;
         [SerializeField, Space] private TextMeshProUGUI _debugInfo;
