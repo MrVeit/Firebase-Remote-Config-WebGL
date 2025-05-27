@@ -198,6 +198,8 @@ namespace FRCWebGL.Core
             DefaultConfig = new LocalConfigStorage(defaultConfig);
             Storage = new RemoteConfigStorage();
 
+            FRCWebLogger.Log("Required components successfully created");
+
             IsInitialized = true;
         }
     }

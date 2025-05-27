@@ -82,10 +82,22 @@ namespace FRCWebGL.Demo
 
             _remoteConfigService = RemoteConfigProvider.Instance;
 
-            _remoteConfigService.Init(true, initConfig, defaultConfig);
-
             _remoteConfigService.OnInitialized += OnRemoteConfigInitialized;
             _remoteConfigService.OnStorageActivated += OnRemoteStorageActivated;
+
+            _remoteConfigService.Init(true, initConfig, defaultConfig);
+
+            _loadInt1Button.onClick.AddListener(LoadInt1);
+            _loadInt2Button.onClick.AddListener(LoadInt2);
+
+            _loadString1Button.onClick.AddListener(LoadString1);
+            _loadString2Button.onClick.AddListener(LoadString2);
+
+            _loadBool1Button.onClick.AddListener(LoadBool1);
+            _loadBool2Button.onClick.AddListener(LoadBool2);
+
+            _loadJson1Button.onClick.AddListener(LoadJson1);
+            _loadJson2Button.onClick.AddListener(LoadJson2);
         }
 
         private void LoadInt1()
@@ -187,18 +199,6 @@ namespace FRCWebGL.Demo
             {
                 button.interactable = true;
             }
-
-            _loadInt1Button.onClick.AddListener(LoadInt1);
-            _loadInt2Button.onClick.AddListener(LoadInt2);
-
-            _loadString1Button.onClick.AddListener(LoadString1);
-            _loadString2Button.onClick.AddListener(LoadString2);
-
-            _loadBool1Button.onClick.AddListener(LoadBool1);
-            _loadBool2Button.onClick.AddListener(LoadBool2);
-
-            _loadJson1Button.onClick.AddListener(LoadJson1);
-            _loadJson2Button.onClick.AddListener(LoadJson2);
         }
 
         private void DisableButtons()
@@ -211,6 +211,8 @@ namespace FRCWebGL.Demo
 
         private void OnRemoteConfigInitialized(bool isSuccess)
         {
+            Debug.Log($"Remonte config init status: {isSuccess}");
+
             if (isSuccess)
             {
                 BindButtons();
@@ -225,18 +227,6 @@ namespace FRCWebGL.Demo
             }
 
             WriteLog("Failed to initialize remote config service");
-        }
-
-        private void OnLocalRemoteConfigUpdated(bool isSuccess)
-        {
-            if (isSuccess)
-            {
-                WriteLog("Default config updated by local storage");
-
-                return;
-            }
-
-            WriteLog("Failed to update default config by local storage");
         }
 
         private void OnRemoteStorageActivated(bool isSuccess)
