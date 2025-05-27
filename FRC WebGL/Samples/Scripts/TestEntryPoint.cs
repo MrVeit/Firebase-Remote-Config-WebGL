@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using FRCWebGL.Core;
 using FRCWebGL.Data;
+using Newtonsoft.Json;
 
 namespace FRCWebGL.Demo
 {
@@ -44,6 +45,10 @@ namespace FRCWebGL.Demo
                 message = "Powered by FRC WebGL"
             };
 
+            var convertJson = JsonConvert.SerializeObject(firstTestJsonItem);
+
+            Debug.Log($"Serialized object from JsonConvert: {convertJson}");
+
             var defaultConfig = new Dictionary<string, object>()
             {
                 { "test_boolean_item_1", true },
@@ -55,6 +60,10 @@ namespace FRCWebGL.Demo
                 { "test_json_item_1", JsonUtility.ToJson(firstTestJsonItem) },
                 { "test_json_item_2", JsonUtility.ToJson(secondTestJsonItem) }
             };
+
+            var convertDict = JsonConvert.SerializeObject(defaultConfig);
+
+            Debug.Log($"Serialized dictionary from JsonConvert: {convertDict}");
 
             FRCWebBridge.Init(initConfig, defaultConfig, (isSuccess) =>
             {
