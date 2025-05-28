@@ -21,9 +21,62 @@ You can test the plugin without installation in a demo scene [via this link](htt
 
 **[Download the latest version of the SDK via the .unityPackage file here](https://github.com/MrVeit/Firebase-Remote-Config-WebGL/releases).**
 
-# How To Create
+# Creating app
+
+Before you start using this plugin - you need to create a configuration of your game.
+
+This can be done in the Firebase console by following this link.
+
+P.S: if you have already used this service for your mobile projects, then skip these steps [by going to this section](https://github.com/MrVeit/Firebase-Remote-Config-WebGL#initialization).
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_1.png" alt="qr"/>
+</p>
+
+After successfully creating the project, you need to go to the `Remote Config` section.
+This can be done by the path `Run -> Remote Config`, having previously expanded the Run tab.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_2.png" alt="qr"/>
+</p>
+
+Now you can create your test/real parameters, after clicking on the `Create configuration` button.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_3.png" alt="qr"/>
+</p>
+
+To allow the Unity client to access these settings, after creating them, be sure to publish the changes using the `Publish Changes` button.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_4.png" alt="qr"/>
+</p>
+
+Well, almost everything is ready! 
+It remains to get the project configuration data to use it in the plugin.
+
+To do this, go through the `gear` icon to `Project Settings` to create them.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_5.png" alt="qr"/>
+</p>
+
+Now scroll down the page just below and click on the `</>` icon, which stands for web application, 
+since my FRC WebGL plugin, is built on top of their JavaScript SDK!
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_6.png" alt="qr"/>
+</p>
+
+Now switch to the `Config` tab in the same window and save these data, as we will need them in the code.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_7.png" alt="qr"/>
+</p>
 
 # Initialization
+
+
 
 # Usage Template
 
