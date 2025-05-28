@@ -158,9 +158,15 @@ ServiceLocator.Bind<IRemoteConfigService>(new RemoteConfigService());
 
 Via DI framework like `Zenject/VContainer`:
 ```c#
-Container.Bind<IRemoteConfigService>().To<RemoteConfigService>().AsSingle().NonLazy();
+void BindViaZenject()
+{
+     Container.Bind<IRemoteConfigService>().To<RemoteConfigService>().AsSingle().NonLazy();
+}
 
-IContainerBuilder builder = builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfigService>().As<IStartable>();
+void BindViaVContainer(IContainerBuilder builder)
+{
+     builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfigService>().As<IStartable>();
+}
 ```
 
 # Usage Template
