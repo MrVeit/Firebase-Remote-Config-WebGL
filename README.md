@@ -84,7 +84,11 @@ Below is a test example of what this initialization might look like:
 public sealed class InitPluginExample: MonoBehaviour
 {
     private IRemoteConfigService‎ _remoteConfig;
-    private IRemoteConfigStorage _remoteStorage;
+
+    private void OnDestroy()
+    {
+        _remoteConfigService.OnInitialized -= OnRemoteConfigInitialized;
+    }
 
     private void Start()
     {
@@ -127,8 +131,6 @@ public sealed class InitPluginExample: MonoBehaviour
             return;
         }
 
-        _remoteStorage = _remoteConfigService.Storage;
-
         Debug.Log("Remote config service initialized and ready for fetch");
     }
 }
@@ -146,27 +148,156 @@ In case you do not specify values for variables `minFetchDelayPerMillis` and `fe
 
 **P.S:** The keys and values must match those you previously created in the `Remote Config` console.
 
-Initially, access to the `IRemoteConfigService` implementation, as a single instance, is provided through the `RemoteConfigProvider` proxy class. If you want to “register” a service yourself to access it in your project, the following are examples using `Service Locator/Zenject/VContainer`.
+Initially, access to the `IRemoteConfigService` implementation, as a single instance, is provided through the `RemoteConfigProvider` proxy class. If you want to "register" a service yourself to access it in your project, the following are examples using `Service Locator/Zenject/VContainer`.
 
 For example, through an implementation of the `Service Locator` pattern:
 ```c#
 ServiceLocator.Bind<IRemoteConfigService>(new RemoteConfigService());
-
-remoteConfig= ServiceLocator.Get<IRemoteConfigService>();
 ```
 
-Via DI frameworks like `Zenject/VContainer`:
+Via DI framework like `Zenject/VContainer`:
 ```c#
-Container.Bind<IRemoteConfigService>().To<RemoteConfigService>().AsSingle();
+Container.Bind<IRemoteConfigService>().To<RemoteConfigService>().AsSingle().NonLazy();
 
-IContainerBuilder builder = builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfigService>();
+IContainerBuilder builder = builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfigService>().As<IStartable>();
 ```
 
 # Usage Template
 
+After successfully initializing the plugin, we can now load the **current version** of the remote config.
+
+## Fetch Config
+
+There are 2 variants: step-by-step download and manual activation and a variant with realization of both stages by one method.
+
+```c#
+public sealed class FetchConfigExample: MonoBehaviour
+{
+     [SerializeField, Space] private Button _fetchConfigButton;
+     [SerializeField] private Button _activateConfigButton;
+     [SerializeField, Space] private Button _fetchAndActivateButton;
+
+     private IRemoteConfigService _remoteConfig;
+
+     private void Start()
+     {
+          _fetchConfigButton.onClick.AddListener(Fetch);
+          _activateConfigButton.onClick.AddListener(Activate);
+          _fetchAndActivateButton.onClick.AddListener(FetchAndActivate);
+
+          _remoteConfig = RemoteConfigProvider.Instance;
+
+          _remoteConfig.OnStorageFetched += OnRemoteStorageFetched;
+          _remoteConfig.OnStorageActivated += OnRemoteStorageActivated;
+     }
+
+     private void Fetch()
+     {
+          if (!IsAvailable())
+          {
+              return;
+          }
+
+          _remoteConfig.FetchConfig();
+     }
+
+     private void Activate()
+     {
+          if (!IsAvailable())
+          {
+               return;
+          }
+
+          _remoteConfig.Activate();
+     }
+
+     private void FetchAndActivate()
+     {
+          if (!IsAvailable())
+          {
+              return;
+          }
+
+          _remoteConfig.FetchAndActivate();
+     }
+
+     private bool IsAvailable()
+     {
+          if (!_remoteConfig.IsInitialized)
+          {
+               Debug.LogWarning("Remote config is not initialized!");
+
+               return false;
+          }
+
+          return true;
+     }
+
+     private void OnRemoteStorageFetched(bool isSuccess)
+     {
+          if (isSuccess)
+          {
+               Debug.Log("Remote storage successfully downloaded and cached locally");
+          }
+     }
+
+     private void OnRemoteStorageActivated(bool isSuccess)
+     {
+          if (isSuccess)
+          {
+               Debug.Log("Remote storage ready for use!");
+          }
+     }
+}
+```
+
+When `Fetch()` method is called, the plugin tries to download the current version of the deleted values and if the request is successful - caches the result locally, but the past version will be available before activation.
+The `Activate()` method updates the old version of the repository to the newly loaded version.
+
+Similarly, the `FetchAndActivate()` method performs both of these functions to use the current version of the repository.
+
+## Load Data
+
+Once the current version of the configuration has been successfully **downloaded and activated** - it is time to start using the data from there.
+
+```c#
+IRemoteConfigStorage storage = RemoteConfigProvider.Instance.Storage;
+
+var myIntValue = storage.GetNumber("my-int-value-key");
+var myStringValue = storage.GetString("my-string-value-key");
+var myBoolValue = storage.GetBoolean("my-bool-value-key");
+
+var myValue = storage.GetValue("my-string-value-key");
+var myValues = storage.GetAll();
+```
+
+The `GetAll()` method returns all available data from the storage in `Dictionary<string, object>` format, and `object GetValue(string key)` you can use in cases when you don't know exactly what data type the key is or for convenience.
+
+In case we want to get the type of storage from where the **data was loaded**, it is enough to call this method:
+
+```c#
+var intValueSource = storage.GetNumber("my-int-value-key");
+```
+
+An enumeration with `Default/Remote/Static/Unknown` will be returned.
+
+This is the full functionality of the plugin as of `version 1.0.0`. It may change in the future, so keep an eye on the **current documentation here**.
+
+# Build
+
+Before you start building a unity project in WebGl, there are a few things you need to do to make sure the plugin will work properly.
+
+<p align="left">
+ <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/buildTemplate.png" alt="qr"/>
+</p>
+
+Go to the Build Settings window, then open `Project Settings -> Player -> Resolution and Presentation` and select the `FRC Plugin` build template. The `Run in Background` setting and the others do not affect anything, so you can leave them unchanged.
+
+Now you can build the project and test the required functionality!
+
 # Donations
 
-Multichain Wallet (BTC/ETH/BNB/MATIC)
+Multichain Wallet (BTC/ETH/BNB/USDT)
 ```
 0x231803Df809C207FaA330646BB5547fD087FEcA1
 ```
