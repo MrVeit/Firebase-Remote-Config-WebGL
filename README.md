@@ -23,11 +23,10 @@ You can test the plugin without installation in a demo scene [via this link](htt
 
 # Creating app
 
-Before you start using this plugin - you need to create a configuration of your game.
+Before you start using this plugin - you need to create a [configuration of your game.](https://console.firebase.google.com/u/0/)
 
-This can be done in the Firebase console by following this link.
-
-P.S: if you have already used this service for your mobile projects, then skip these steps [by going to this section](https://github.com/MrVeit/Firebase-Remote-Config-WebGL#initialization).
+**P.S:** if you have already used this service for your mobile projects, 
+then skip these steps [by going to this section](https://github.com/MrVeit/Firebase-Remote-Config-WebGL#initialization).
 
 <p align="left">
  <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/firebaseAppCreateStep_1.png" alt="qr"/>
