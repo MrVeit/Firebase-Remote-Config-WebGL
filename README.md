@@ -144,11 +144,13 @@ As recommended by the official Remote Config documentation, the value of the `mi
 It is strongly **RECOMMENDED** to create standard configs in `Dictionary<string, object>` format, which will be placed locally in `local storage`, after the WebGL build. 
 You can also pass an empty dictionary with no values, but in that case the local data **MAY NOT BE AVAILABLE** from the storage unless you force the loading of the config values.
 
-In case you do not specify values for variables `minFetchDelayPerMillis` and `fetchTimeoutMillis` in object `FirebaseInitConfig`, the plugin will do it by itself, specifying values for testing **EVALUATE 1 MINUTE** in milliseconds.
+In case you do not specify values for variables `minFetchDelayPerMillis` and `fetchTimeoutMillis` 
+in object `FirebaseInitConfig`, the plugin will do it by itself, specifying values for testing **EVALUATE 1 MINUTE** in milliseconds.
 
 **P.S:** The keys and values must match those you previously created in the `Remote Config` console.
 
-Initially, access to the `IRemoteConfigService` implementation, as a single instance, is provided through the `RemoteConfigProvider` proxy class. If you want to "register" a service yourself to access it in your project, the following are examples using `Service Locator/Zenject/VContainer`.
+Initially, access to the `IRemoteConfigService` implementation, as a single instance, is provided 
+through the `RemoteConfigProvider` proxy class. If you want to "register" a service yourself to access it in your project, the following are examples using `Service Locator/Zenject/VContainer`.
 
 For example, through an implementation of the `Service Locator` pattern:
 ```c#
@@ -251,7 +253,8 @@ public sealed class FetchConfigExample: MonoBehaviour
 }
 ```
 
-When `Fetch()` method is called, the plugin tries to download the current version of the deleted values and if the request is successful - caches the result locally, but the past version will be available before activation.
+When `Fetch()` method is called, the plugin tries to download the current version of the deleted 
+values and if the request is successful - caches the result locally, but the past version will be available before activation.
 The `Activate()` method updates the old version of the repository to the newly loaded version.
 
 Similarly, the `FetchAndActivate()` method performs both of these functions to use the current version of the repository.
@@ -271,7 +274,8 @@ var myValue = storage.GetValue("my-string-value-key");
 var myValues = storage.GetAll();
 ```
 
-The `GetAll()` method returns all available data from the storage in `Dictionary<string, object>` format, and `object GetValue(string key)` you can use in cases when you don't know exactly what data type the key is or for convenience.
+The `GetAll()` method returns all available data from the storage in `Dictionary<string, object>` format, 
+and `object GetValue(string key)` you can use in cases when you don't know exactly what data type the key is or for convenience.
 
 In case we want to get the type of storage from where the **data was loaded**, it is enough to call this method:
 
@@ -281,17 +285,18 @@ var intValueSource = storage.GetNumber("my-int-value-key");
 
 An enumeration with `Default/Remote/Static/Unknown` will be returned.
 
-This is the full functionality of the plugin as of `version 1.0.0`. It may change in the future, so keep an eye on the **current documentation here**.
+This is the full functionality of the plugin as of `version 1.0.0`. It may change in the future, so follow the **current documentation version here**.
 
 # Build
 
-Before you start building a unity project in WebGl, there are a few things you need to do to make sure the plugin will work properly.
+Before you start building a unity project `in WebGL`, there are a few things you need to do to make sure the plugin will work properly.
 
 <p align="left">
  <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/buildTemplate.png" alt="qr"/>
 </p>
 
-Go to the Build Settings window, then open `Project Settings -> Player -> Resolution and Presentation` and select the `FRC Plugin` build template. The `Run in Background` setting and the others do not affect anything, so you can leave them unchanged.
+Go to the Build Settings window, then open `Project Settings -> Player -> Resolution and Presentation` and 
+select the `FRC Plugin` build template. The `Run in Background` setting and the others do not affect anything, so you can leave them unchanged.
 
 Now you can build the project and test the required functionality!
 
