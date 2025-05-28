@@ -94,10 +94,10 @@ public sealed class InitPluginExample: MonoBehaviour
     {
         var initConfig = new FirebaseInitConfig()
         {
-            apiKey = "AIzaSyDVyPidX_BeSEcwwM4tkZ325TBaqXp2P8s",
-            authDomain = "frc-unity-webgl.firebaseapp.com",
-            projectId = "frc-unity-webgl",
-            appId = "1:67934057766:web:a4774b178bebe9f8b87de7",
+            apiKey = "AIzaSyA4KMCcJ1BAANqfJ21sn811ftfgMgWPTbaM",
+            authDomain = "my-best-game-ever.firebaseapp.com",
+            projectId = "my-best-game-ever",
+            appId = "1:611501254098:web:bdeb0b69f669c70bc8d40b",
 
             minFetchDelayPerMillis = 60000,
             fetchTimeoutMillis = 60000,
@@ -170,7 +170,7 @@ After successfully initializing the plugin, we can now load the **current versio
 
 ## Fetch Config
 
-There are 2 variants: step-by-step download and manual activation and a variant with realization of both stages by one method.
+**There are 2 variants:** step-by-step download and manual activation and a variant with realization of both stages by one method.
 
 ```c#
 public sealed class FetchConfigExample: MonoBehaviour
@@ -255,6 +255,7 @@ public sealed class FetchConfigExample: MonoBehaviour
 
 When `Fetch()` method is called, the plugin tries to download the current version of the deleted 
 values and if the request is successful - caches the result locally, but the past version will be available before activation.
+
 The `Activate()` method updates the old version of the repository to the newly loaded version.
 
 Similarly, the `FetchAndActivate()` method performs both of these functions to use the current version of the repository.
