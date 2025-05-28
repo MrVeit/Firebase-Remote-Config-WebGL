@@ -136,8 +136,8 @@ public sealed class InitPluginExample: MonoBehaviour
 
 In the `FirebaseInitConfig` object, we use the data we created earlier in the Firebase console for our project in this section.
 
-As recommended by the official Remote Config documentation, the value of the `minFetchDelayPerMillis` variable should be set to a **MINIMUM of 12 HOURS** in milliseconds when building a project **for production**.
-For testing purposes, you can set the value to 1 minute if you do not make requests too often to avoid getting an `exceed limit` error.
+As recommended by the official Remote Config documentation, the value of the `minFetchDelayPerMillis` variable should be set to a **MINIMUM 12 HOURS** in milliseconds when building a project **for production**.
+**For testing** purposes, you can set the value to 1 minute if you do not make requests too often to avoid getting an `exceed limit` error.
 
 It is strongly **RECOMMENDED** to create standard configs in `Dictionary<string, object>` format, which will be placed locally in `local storage`, after the WebGL build. 
 You can also pass an empty dictionary with no values, but in that case the local data **MAY NOT BE AVAILABLE** from the storage unless you force the loading of the config values.
