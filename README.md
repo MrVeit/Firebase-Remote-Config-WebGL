@@ -21,6 +21,8 @@ You can test the plugin without installation in a demo scene [via this link](htt
 
 **[Download the latest version of the SDK via the .unityPackage file here](https://github.com/MrVeit/Firebase-Remote-Config-WebGL/releases).**
 
+# How To Create
+
 # Initialization
 
 # Usage Template
