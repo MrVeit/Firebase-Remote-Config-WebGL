@@ -146,12 +146,7 @@ In case you do not specify values for variables `minFetchDelayPerMillis` and `fe
 
 **P.S:** The keys and values must match those you previously created in the `Remote Config` console.
 
-Initially, the `IRemoteConfigService` is accessed via the intermediate proxy class `RemoteConfigProvider` for cases where you don't want to bother with implementing access to it via Singleton/Service Locator/DI and want to directly access the functionality with its single instance.
-
-Otherwise, you can also create a plugin service this way and register its instance as you need:
-```c#
-IRemoteConfigService remoteConfig = new RemoteConfigService();
-```
+Initially, access to the `IRemoteConfigService` implementation, as a single instance, is provided through the `RemoteConfigProvider` proxy class. If you want to “register” a service yourself to access it in your project, the following are examples using `Service Locator/Zenject/VContainer`.
 
 For example, through an implementation of the `Service Locator` pattern:
 ```c#
@@ -162,11 +157,9 @@ remoteConfig= ServiceLocator.Get<IRemoteConfigService>();
 
 Via DI frameworks like `Zenject/VContainer`:
 ```c#
-Container.Bind<IRemoteConfig>().To<RemoteConfigService>().AsSingle();
-var remoteConfigInstance = Container.Resolve<IRemoteConfigService>();
+Container.Bind<IRemoteConfigService>().To<RemoteConfigService>().AsSingle();
 
-IContainerBuilder builder = builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfig>();
-builder.RegisterEntryPoint<RemoteConfigBootstrapper>();
+IContainerBuilder builder = builder.Register<RemoteConfigService>(Lifetime.Singleton).As<IRemoteConfigService>();
 ```
 
 # Usage Template
