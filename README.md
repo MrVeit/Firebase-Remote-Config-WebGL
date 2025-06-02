@@ -175,7 +175,7 @@ After successfully initializing the plugin, we can now load the **current versio
 
 ## Fetch Config
 
-**There are 2 variants:** step-by-step download and manual activation and a variant with realization of both stages by one method.
+**There are two options:** step-by-step loading with manual activation and implementation of both stages using a single method.
 
 ```c#
 public sealed class FetchConfigExample: MonoBehaviour
