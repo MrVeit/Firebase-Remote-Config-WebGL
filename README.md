@@ -258,7 +258,7 @@ public sealed class FetchConfigExample: MonoBehaviour
 }
 ```
 
-When `Fetch()` method is called, the plugin tries to download the current version of the deleted 
+When `Fetch()` method is called, the plugin tries to download the current version of the remote 
 values and if the request is successful - caches the result locally, but the past version will be available before activation.
 
 The `Activate()` method updates the old version of the repository to the newly loaded version.
