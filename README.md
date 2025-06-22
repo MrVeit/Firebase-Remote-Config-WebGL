@@ -11,7 +11,7 @@
  <img width="600px" src="https://github.com/MrVeit/Firebase-Remote-Config-WebGL/blob/master/Assets/pluginMainBackground.png" alt="qr"/>
 </p>
 
-**FRC WEBGL** is a plugin for using Firebase Remote Config functionality in WebGL projects based on the Firebase JavaScript SDK built on Unity.
+**FRC WEBGL** is a plugin for using Firebase Remote Config functionality in Unity projects for WebGL builds based on the Firebase JavaScript SDK.
 
 # Technical Demo
 
