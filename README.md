@@ -86,7 +86,7 @@ public sealed class InitPluginExample: MonoBehaviour
 
     private void OnDestroy()
     {
-        _remoteConfigService.OnInitialized -= OnRemoteConfigInitialized;
+        _remoteConfig.OnInitialized -= OnRemoteConfigInitialized;
     }
 
     private void Start()
@@ -112,11 +112,11 @@ public sealed class InitPluginExample: MonoBehaviour
             { "test_string_item_2", "Failed to fetch X-Powered-By" }
         };
 
-        _remoteConfigService = RemoteConfigProvider.Instance;
+        _remoteConfig = RemoteConfigProvider.Instance;
 
-        _remoteConfigService.OnInitialized += OnRemoteConfigInitialized;
+        _remoteConfig.OnInitialized += OnRemoteConfigInitialized;
 
-        _remoteConfigService.Init(true, initConfig, defaultConfig);
+        _remoteConfig.Init(true, initConfig, defaultConfig);
     }
 
     private void OnRemoteConfigInitialized(bool isSuccess)
