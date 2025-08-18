@@ -313,6 +313,11 @@ Multichain Wallet (BTC/ETH/BNB/USDT)
 0x231803Df809C207FaA330646BB5547fD087FEcA1
 ```
 
+Paypal
+```
+Mr_Benior@proton.me
+```
+
 **Thanks for your support!**
 
 # Support
